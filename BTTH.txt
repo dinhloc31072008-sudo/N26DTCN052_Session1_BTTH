@@ -1,0 +1,94 @@
+(1) Sơ đồ các bước xâu chuỗi Prompt (Prompt Chaining)
+Việc chia nhỏ một tác vụ lớn thành các bước tuần tự giúp kiểm soát lượng token đầu ra, giữ vững mạch văn và hạn chế tối đa tình trạng AI bị "ảo giác" (hallucination) do quá tải ngữ cảnh:
+
+Plaintext
+[BƯỚC 0: THIẾT LẬP VAI TRÒ & ĐỊNH HƯỚNG (SYSTEM CONTEXT)]
+   │  • Khai báo vai trò Giảng viên CNTT, đối tượng là tân sinh viên, 
+   │    quy định độ dài & văn phong thống nhất cho toàn bộ chuỗi.
+   ▼
+[BƯỚC 1: PROMPT 1 - GIẢI MÃ BẢN CHẤT LLM]
+   │  • Đầu ra 1: Phần 1 của cẩm nang (Cách AI đoán từ & kiểm soát Token).
+   ▼  (Truyền ngữ cảnh Đầu ra 1 làm nền cho Bước 2)
+[BƯỚC 2: PROMPT 2 - CHỐNG ẢO GIÁC KHI CODE]
+   │  • Đầu ra 2: Phần 2 của cẩm nang (3 cách nhận diện & xử lý ảo giác AI).
+   ▼  (Truyền ngữ cảnh Đầu ra 1 + 2 làm nền cho Bước 3)
+[BƯỚC 3: PROMPT 3 - THỰC HÀNH KHUNG CREATE]
+   │  • Đầu ra 3: Phần 3 của cẩm nang (Cấu trúc CREATE + Prompt mẫu lập trình).
+   ▼
+[BƯỚC 4: PROMPT 4 - TỔNG HỢP & BIÊN TẬP HOÀN CHỈNH]
+   │  • Ghép nối 3 phần, thêm lời mở đầu/kết thúc, rà soát tính nhất quán 
+   │    và xuất bản Cuốn cẩm nang hoàn chỉnh.
+(2) Nội dung các Prompt thành phần
+Prompt 1: Viết Phần 1 (Bản chất LLM & Kiểm soát Token)
+Plaintext
+[Character - Vai trò]: Bạn là một giảng viên khoa Công nghệ Thông tin tận tâm, chuyên hướng dẫn phương pháp học tập cho tân sinh viên.
+[Request - Yêu cầu]: Hãy viết Phần 1 cho cuốn "Cẩm nang sử dụng AI học lập trình" với chủ đề: "AI hoạt động thế nào? Hiểu về cách đoán từ (LLM) và Token".
+[Examples - Ví dụ]: Dùng hình ảnh ví dụ gần gũi như tính năng "gợi ý từ tiếp theo" khi nhắn tin trên điện thoại hoặc tự động hoàn thành code (autocomplete) trong IDE để giải thích khái niệm dự đoán xác suất từ tiếp theo.
+[Adjustments - Điều chỉnh]: Giải thích ngắn gọn cách chia nhỏ câu lệnh để kiểm soát Token (tránh AI quên ngữ cảnh khi đoạn hội thoại quá dài). Không dùng thuật ngữ toán học phức tạp.
+[Type of output - Định dạng]: Trình bày bằng gạch đầu dòng súc tích, có tiêu đề phụ rõ ràng, giới hạn khoảng 150 - 200 từ.
+Prompt 2: Viết Phần 2 (3 cách nhận diện ảo giác AI)
+Plaintext
+[Character - Vai trò]: Tiếp tục với vai trò giảng viên CNTT ở phần trước.
+[Request - Yêu cầu]: Dựa trên bản chất "AI chỉ đoán từ theo xác suất" vừa nêu ở Phần 1, hãy viết tiếp Phần 2 của cẩm nang với chủ đề: "3 cách nhận diện ảo giác (Hallucination) của AI khi viết code".
+[Examples - Ví dụ]: Đưa ra các tình huống thực tế sinh viên hay gặp như: AI tự bịa ra tên thư viện không tồn tại (ví dụ trong Python/C++), giải thích sai logic thuật toán nhưng giọng văn rất tự tin, hoặc dùng hàm đã lỗi thời (deprecated).
+[Adjustments - Điều chỉnh]: Với mỗi dấu hiệu nhận biết, hãy kèm theo 1 mẹo kiểm chứng thực tế (như chạy thử trên trình biên dịch, đọc tài liệu chính thức).
+[Type of output - Định dạng]: Danh sách đánh số từ 1 đến 3, trình bày mạch lạc, giới hạn khoảng 200 - 250 từ.
+Prompt 3: Viết Phần 3 (Khung cấu trúc CREATE & Prompt mẫu)
+Plaintext
+[Character - Vai trò]: Giữ nguyên phong cách giảng viên hướng dẫn sinh viên năm nhất.
+[Request - Yêu cầu]: Hãy viết Phần 3 (phần cuối) của cẩm nang với chủ đề: "Bí kíp đặt câu lệnh chuẩn xác bằng khung CREATE".
+[Examples - Ví dụ]: Giải nghĩa ngắn gọn 6 chữ cái C-R-E-A-T-E (Character, Request, Examples, Adjustments, Type of output, Extras). Sau đó cung cấp 1 mẫu Prompt hoàn chỉnh áp dụng đúng khung này để nhờ AI giải thích lỗi (debug) một đoạn code C/C++ hoặc Python cơ bản mà không làm hộ bài tập.
+[Adjustments - Điều chỉnh]: Nhấn mạnh nguyên tắc biến AI thành gia sư gợi ý tư duy thay vì công cụ chép code đối phó.
+[Type of output - Định dạng]: Bảng giải nghĩa khung CREATE + Khung code block chứa Prompt mẫu, giới hạn khoảng 250 từ.
+Prompt 4: Biên tập và hoàn thiện cẩm nang
+Plaintext
+[Request - Yêu cầu]: Hãy ghép nối 3 phần nội dung đã tạo ở trên thành một cuốn cẩm nang hoàn chỉnh mang tên: "CẨM NANG BỎ TÚI: HỌC LẬP TRÌNH CÙNG AI AN TOÀN & HIỆU QUẢ CHO TÂN SINH VIÊN".
+[Adjustments - Điều chỉnh]: Thêm một đoạn lời mở đầu ngắn truyền cảm hứng (khoảng 3 câu) và một lời nhắn nhủ chốt lại ở cuối bài. Đảm bảo định dạng Markdown đẹp mắt, thống nhất xưng hô "bạn - mình".
+(3) Cuốn cẩm nang kết quả hoàn chỉnh xuất ra từ AI
+📘 CẨM NANG BỎ TÚI: HỌC LẬP TRÌNH CÙNG AI AN TOÀN & HIỆU QUẢ CHO TÂN SINH VIÊN
+Chào mừng các tân sinh viên đến với giảng đường đại học! AI là một trợ thủ đắc lực giúp bạn tăng tốc trên hành trình chinh phục những dòng code đầu tiên. Tuy nhiên, để AI thực sự giúp bạn giỏi lên chứ không phải phụ thuộc, hãy nắm vững 3 nguyên tắc vàng dưới đây.
+
+Phần 1: AI hoạt động thế nào? Hiểu về cách đoán từ (LLM) và Token
+Nhiều bạn lầm tưởng AI có bộ não tư duy như con người, nhưng thực chất các mô hình ngôn ngữ lớn (LLM) hoạt động giống như phiên bản siêu nâng cấp của tính năng gợi ý từ tiếp theo khi bạn nhắn tin trên điện thoại.
+
+Cỗ máy đoán xác suất: Khi bạn nhập một câu hỏi, AI không "hiểu" ý nghĩa thực sự mà tính toán xem từ (hoặc mảnh từ) nào có xác suất xuất hiện hợp lý nhất tiếp theo dựa trên kho dữ liệu khổng lồ nó từng học.
+
+Khái niệm Token & Cửa sổ ngữ cảnh: AI đọc và xử lý văn bản theo từng đơn vị gọi là Token (1 từ tiếng Việt thường tốn khoảng 1–2 token). Mỗi cuộc trò chuyện đều có giới hạn bộ nhớ (Context Window). Nếu bạn nhồi nhét quá nhiều dòng code hoặc trò chuyện quá dài trong một khung chat, AI sẽ bị "tràn bộ nhớ", quên mất yêu cầu ban đầu và bắt đầu trả lời lan man.
+
+Mẹo kiểm soát Token: Hãy chia nhỏ vấn đề thành từng bước (Prompt Chaining) và mở phiên chat mới mỗi khi chuyển sang một bài tập lập trình khác.
+
+Phần 2: 3 cách nhận diện "ảo giác" (Hallucination) của AI khi viết code
+Vì AI ưu tiên tạo ra câu trả lời nghe có vẻ trôi chảy và hợp lý nhất thay vì kiểm chứng sự thật, nó rất dễ mắc bệnh "nói dối cực kỳ tự tin" (ảo giác AI). Hãy cảnh giác với 3 dấu hiệu sau:
+
+Tự bịa ra hàm hoặc thư viện không tồn tại: Khi giải một bài toán khó, AI có thể tự sáng tạo ra một tên hàm nghe rất chuyên nghiệp (ví dụ: import super_fast_sort trong Python) nhưng khi chạy thì trình biên dịch báo lỗi ModuleNotFoundError.
+
+Cách kiểm chứng: Luôn copy code chạy thử trực tiếp trên IDE (VS Code, Dev-C++) và tra cứu tên thư viện trên trang tài liệu chính thức (Documentation).
+
+Code chạy được nhưng sai logic thuật toán: AI có thể viết một đoạn code không hề báo lỗi cú pháp, nhưng lại xử lý sai các trường hợp biên (edge cases) như số âm, mảng rỗng hoặc chia cho 0.
+
+Cách kiểm chứng: Tự thiết kế các bộ dữ liệu kiểm thử (Test case) hóc búa để bắt lỗi code của AI thay vì chỉ chạy mỗi ví dụ đề bài cho.
+
+Sử dụng cú pháp hoặc phiên bản đã lỗi thời (Deprecated): Dữ liệu huấn luyện của AI có độ trễ nhất định, nên nó thường đưa ra các hàm cũ kỹ không còn được hỗ trợ ở các phiên bản ngôn ngữ lập trình mới nhất.
+
+Cách kiểm chứng: Đọc kỹ các dòng cảnh báo màu vàng (Warning) trên màn hình terminal và hỏi lại AI xem cú pháp đó có còn chuẩn ở phiên bản hiện tại không.
+
+Phần 3: Bí kíp đặt câu lệnh chuẩn xác bằng khung CREATE
+Đừng hỏi AI kiểu: "Giải giúp mình bài tập này". Hãy biến AI thành một người gia sư tận tâm bằng công thức CREATE:
+
+Chữ cái	Ý nghĩa	Tác dụng khi học lập trình
+C - Character	Vai trò	Định hình cách AI giao tiếp (VD: Giảng viên CNTT, Senior Developer).
+R - Request	Yêu cầu	Nêu rõ nhiệm vụ cụ thể (giải thích lỗi, tối ưu code, gợi ý thuật toán).
+E - Examples	Ví dụ	Cung cấp đoạn code hiện tại, thông báo lỗi hoặc định dạng đầu vào/ra.
+A - Adjustments	Điều chỉnh	Đặt giới hạn quan trọng (VD: Không viết sẵn code hoàn chỉnh, chỉ gợi ý).
+T - Type of output	Định dạng	Chọn cách trình bày dễ đọc (gạch đầu dòng, sơ đồ luồng, bảng so sánh).
+E - Extras	Bổ sung	Thêm ngữ cảnh (VD: Tôi là sinh viên năm nhất mới học C++ cơ bản).
+🛠️ Prompt mẫu chuẩn CREATE để nhờ AI sửa lỗi (Debug) code:
+Plaintext
+[Character]: Bạn là một trợ giảng môn Nhập môn Lập trình kiên nhẫn và dễ hiểu.
+[Request]: Hãy giúp mình tìm nguyên nhân gây ra lỗi vòng lặp vô tận trong đoạn code C++ bên dưới.
+[Examples]: 
+(Dán đoạn code của bạn vào đây)
+[Adjustments]: Tuyệt đối KHÔNG viết lại đoạn code đã sửa hoàn chỉnh cho mình. Chỉ chỉ ra dòng đang sai, giải thích tại sao logic đó bị lặp vô tận và đặt 1 câu hỏi gợi mở để mình tự sửa.
+[Type of output]: Trình bày ngắn gọn trong 3 gạch đầu dòng.
+[Extras]: Mình mới học lập trình được 2 tuần nên hãy giải thích bằng ngôn ngữ đơn giản nhất.
+Lời kết: AI không thể thay thế tư duy của một lập trình viên, nhưng một sinh viên biết cách làm chủ AI chắc chắn sẽ tiến xa hơn rất nhiều. Chúc bạn có những giờ phút học tập đầy cảm hứng và chinh phục mọi môn học lập trình!
